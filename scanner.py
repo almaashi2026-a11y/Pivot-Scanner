@@ -1,35 +1,24 @@
-def calculate_pivots(high, low, close):
+def check_pivot_and_liquidity(current_price, high, low, close, historical_lows):
     """
-    حساب نقاط الارتكاز الكلاسيكية
-    Pivot = (High + Low + Close) / 3
-    """
-    pivot = (high + low + close) / 3
-    r1 = (2 * pivot) - low
-    r2 = pivot + (high - low)
-    s1 = (2 * pivot) - high
-    s2 = pivot - (high - low)
-    
-    return {
-        "pivot": pivot,
-        "r1": r1,
-        "r2": r2,
-        "s1": s1,
-        "s2": s2
-    }
-
-def check_pivot_alert(current_price, high, low, close):
-    """
-    التحقق من اقتراب السعر من نقطة الارتكاز بناءً على نطاق 2% (PIVOT_RANGE)
+    تحليل مزدوج: 
+    1. نقاط الارتكاز الكلاسيكية.
+    2. الارتداد من قيعان قديمة (مناطق سيولة).
     """
     levels = calculate_pivots(high, low, close)
+    alerts = []
     
-    # التحقق هل السعر الحالي قريب من أي مستوى (دعم أو مقاومة)
+    # 1. التحقق من نقاط الارتكاز الكلاسيكية
     for key, value in levels.items():
-        # حساب نسبة الاختلاف
-        diff = abs(current_price - value) / value
-        
-        # إذا كان السعر ضمن نطاق 2% من أي مستوى ارتكاز
-        if diff <= 0.02: 
-            return True, f"السعر اقترب من {key.upper()}: {value:.2f}"
-            
+        if abs(current_price - value) / value <= 0.02:
+            alerts.append(f"🎯 ارتكاز: اقترب من {key.upper()} عند {value:.2f}")
+
+    # 2. التحقق من الارتداد من القيعان القديمة (مناطق السيولة)
+    # historical_lows يجب أن تكون قائمة تحتوي على أدنى أسعار للأيام الـ 20 الماضية
+    min_historical = min(historical_lows)
+    if abs(current_price - min_historical) / min_historical <= 0.015: # هامش 1.5% للقيعان
+        alerts.append(f"🌊 سيولة: السعر يختبر قاعاً قديماً عند {min_historical:.2f} (فرصة ارتداد)")
+
+    if alerts:
+        return True, "\n".join(alerts)
+    
     return False, None
