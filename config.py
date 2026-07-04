@@ -12,9 +12,9 @@ load_dotenv()
 # ==========================
 # API KEYS
 # ==========================
-FINNHUB_API_KEY = os.getenv("d934frpr01qpou39gg00d934frpr01qpou39gg0g")
-TELEGRAM_BOT_TOKEN = os.getenv("8895817474:AAHxy3y7WfwNSFfYUY9qPNZmo4xCvlURB8o")
-TELEGRAM_CHAT_ID = os.getenv("7990990947")
+FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
 # ==========================
 # Scanner Settings
