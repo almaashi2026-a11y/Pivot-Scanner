@@ -1,7 +1,12 @@
-# ملف إعدادات النظام
-FINNHUB_API_KEY = "هنا_ضع_مفتاحك"
-TELEGRAM_BOT_TOKEN = "هنا_ضع_توكن_التليجرام"
-TELEGRAM_CHAT_ID = "هنا_ضع_رقم_الشات"
+import os
 
-# هذا هو المتغير الذي كان يسبب الخطأ في 4185.jpg و 4184.jpg
+# المفاتيح الأساسية
+FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY", "")
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
+
+# تعريف كافة المتغيرات التي يطلبها الكود لتجنب أخطاء الاستيراد
 MIN_VOLUME = 50000 
+MIN_PRICE = 0.20
+MAX_PRICE = 10.00
+PIVOT_RANGE = 0.015
