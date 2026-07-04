@@ -16,26 +16,33 @@ class MarketFilter:
     def __init__(self):
         pass
 
-    def is_valid_stock(self, quote):
+    def is_valid_stock(self, candles):
 
-        if not quote:
+        # التأكد من وجود بيانات
+        if not candles:
             return False
 
-        price = quote.get("c", 0)
-        volume = quote.get("v", 0)
-
-        # السعر
-        if price < MIN_PRICE:
+        if candles.get("s") != "ok":
             return False
 
-        if price > MAX_PRICE:
+        closes = candles.get("c", [])
+        volumes = candles.get("v", [])
+
+        if len(closes) == 0 or len(volumes) == 0:
             return False
 
-        # الحجم
+        price = closes[-1]
+        volume = volumes[-1]
+
+        # فلتر السعر
+        if price < MIN_PRICE or price > MAX_PRICE:
+            return False
+
+        # فلتر الحجم
         if volume < MIN_VOLUME:
             return False
 
-        # قيمة التداول
+        # فلتر قيمة التداول
         dollar_volume = price * volume
 
         if dollar_volume < MIN_DOLLAR_VOLUME:
