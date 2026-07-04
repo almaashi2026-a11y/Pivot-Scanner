@@ -1,0 +1,41 @@
+    # ======================================
+    # تشغيل السكنر
+    # ======================================
+
+    def run(self):
+
+        print("=" * 50)
+        print("Starting AIF Pivot Scanner...")
+        print("=" * 50)
+
+        # تحميل الأسهم أول مرة فقط
+        if len(self.symbols) == 0:
+            self.symbols = self.load_symbols()
+
+        total = len(self.symbols)
+
+        print(f"Scanning {total} Symbols")
+
+        count = 0
+
+        for symbol in self.symbols:
+
+            try:
+
+                self.scan_symbol(symbol)
+
+                count += 1
+
+                if count % 50 == 0:
+                    print(f"Scanned {count}/{total}")
+
+                # انتظار بسيط لتخفيف الضغط على Finnhub
+                time.sleep(0.25)
+
+            except Exception as e:
+
+                print(f"{symbol} Error : {e}")
+
+        print("=" * 50)
+        print("Scan Finished")
+        print("=" * 50)
